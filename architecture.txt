@@ -1,0 +1,94 @@
+enum Side { 
+    BLACK, 
+    WHITE 
+};
+
+enum PieceType { 
+    WHITE_KING,
+    WHITE_QUEEN,
+    WHITE_ROOK,
+    WHITE_BISHOP,
+    WHITE_KNIGHT,
+    WHITE_PAWN,
+    BLACK_KING,
+    BLACK_QUEEN,
+    BLACK_ROOK,
+    BLACK_BISHOP,
+    BLACK_KNIGHT,
+    BLACK_PAWN,
+    NONE
+};
+
+enum MovementType { 
+    DEFAULT,
+    CAPTURE, 
+    LONG_CASTLING, 
+    SHORT_CASTLING, 
+    PROMOTION, 
+    EN_PASSANT 
+};
+/*
+promotion - pawn at 8 rank
+en passant - the capture by a pawn of an enemy pawn on the same rank and an adjacent file that has just made an initial two-square advance
+*/
+
+struct Coordinates {
+    int rank;
+    char file;
+};
+
+struct Movement{
+    MovementType type;
+    Cell *toCell; 
+};
+
+class SpriteComponent {
+private:
+    sf::Texture m_texture;
+    sf::Sprite m_sprite;
+public:
+    void render(sf::RenderWindow &renderWindow);
+
+};
+
+class MovableSpriteComponent : public SpriteComponent {
+private:
+    bool isSelected = false;
+
+};
+
+class Cell {
+private:
+    Coordinates position;
+    bool isAttacked;
+    PieceType standingPieceType;
+};
+
+class Figure : public MovableSpriteComponent {
+protected:
+    Side m_side;
+    std::vector<Movement> validMoves;
+public:
+    void move(Movement requestedMove, Board board);
+    void updateValidMoves(Board board);
+
+};
+
+class Board : public SpriteComponent {
+private:
+    Cell field[8][8];
+};
+
+class Player {
+private:
+    bool isWinner = false;
+    std::vector<Figure *> playingFigures;
+};
+
+class Game { 
+private:
+    Board m_board;
+    Player m_blackPlayer;
+    Player m_whitePlayer;
+    bool isEnded = false;
+};

@@ -1,2 +1,2 @@
 # chess
- chess game sfml c++
+chess game sfml c++ for macOS

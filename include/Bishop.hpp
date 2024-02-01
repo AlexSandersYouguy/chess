@@ -18,10 +18,10 @@ void Bishop::updateValidMoves(BoardModel boardModel) {
     Movement potentialMove;
     potentialMove.fromCellCoordinates = this->getCoordinates();
     sf::Vector2i difference[4] = {
-        sf::Vector2i(1, 1),     // forward by main diagonal
-        sf::Vector2i(-1, 1),    // backward by side diagonal
-        sf::Vector2i(1, -1),    // forward by side diagonal
-        sf::Vector2i(-1, -1),   // backward by main diagonal
+        sf::Vector2i(1, 1),     
+        sf::Vector2i(-1, 1),    
+        sf::Vector2i(1, -1),    
+        sf::Vector2i(-1, -1)   
     };
     for (sf::Vector2i shift : difference) {
         for (sf::Vector2i newCoordinates = this->getCoordinates(); 
@@ -30,76 +30,18 @@ void Bishop::updateValidMoves(BoardModel boardModel) {
             if (boardModel.getCellModel(newCoordinates).m_side == m_side) 
                 break;
             else if (boardModel.getCellModel(newCoordinates).m_side == -m_side) {
-                BoardModel potentialBoardSituation(boardModel);
+                potentialMove.type = MovementType::CAPTURE;
+                potentialMove.toCellCoordinates = newCoordinates;
+                m_validMoves.push_back(potentialMove);
+                break;
+            }
+            else {
+                potentialMove.type = MovementType::DEFAULT;
+                potentialMove.toCellCoordinates = newCoordinates;
+                m_validMoves.push_back(potentialMove);                
             }
         }
     }
-
-
-
-
-    // // by main diagonal
-    // for (int i = m_cell->getCoordinates().x, j = m_cell->getCoordinates().y; i < FIELD_SIDE && j < FIELD_SIDE; i++, j++) {
-    //     if (boardModel.getCellModel(i, j).m_side == m_side) 
-    //         break;
-    //     else if (boardModel.getCellModel(i, j).m_side == -m_side) {
-    //         potentialMove.type = MovementType::CAPTURE;
-    //         potentialMove.toCellCoordinates = sf::Vector2i(i, j);
-    //         m_validMoves.push_back(potentialMove);
-    //         break;
-    //     }
-    //     else {
-    //         potentialMove.type = MovementType::DEFAULT;
-    //         potentialMove.toCellCoordinates = sf::Vector2i(i, j);
-    //         m_validMoves.push_back(potentialMove);
-    //     }
-    // }
-    // for (int i = m_cell->getCoordinates().x, j = m_cell->getCoordinates().y; i >= 0 && j >= 0; i--, j--) {
-    //     if (boardModel.getCellModel(i, j).m_side == m_side) 
-    //         break;
-    //     else if (boardModel.getCellModel(i, j).m_side == -m_side) {
-    //         potentialMove.type = MovementType::CAPTURE;
-    //         potentialMove.toCellCoordinates = sf::Vector2i(i, j);
-    //         m_validMoves.push_back(potentialMove);
-    //         break;
-    //     }
-    //     else {
-    //         potentialMove.type = MovementType::DEFAULT;
-    //         potentialMove.toCellCoordinates = sf::Vector2i(i, j);
-    //         m_validMoves.push_back(potentialMove);
-    //     }
-    // }
-    // // by side diagonal
-    // for (int i = m_cell->getCoordinates().x, j = m_cell->getCoordinates().y; i >= 0 && j < FIELD_SIDE; i--, j++) {
-    //     if (boardModel.getCellModel(i, j).m_side == m_side) 
-    //         break;
-    //     else if (boardModel.getCellModel(i, j).m_side == -m_side) {
-    //         potentialMove.type = MovementType::CAPTURE;
-    //         potentialMove.toCellCoordinates = sf::Vector2i(i, j);
-    //         m_validMoves.push_back(potentialMove);
-    //         break;
-    //     }
-    //     else {
-    //         potentialMove.type = MovementType::DEFAULT;
-    //         potentialMove.toCellCoordinates = sf::Vector2i(i, j);
-    //         m_validMoves.push_back(potentialMove);
-    //     }
-    // }
-    // for (int i = m_cell->getCoordinates().x, j = m_cell->getCoordinates().y; i < FIELD_SIDE && j >= 0; i++, j--) {
-    //     if (boardModel.getCellModel(i, j).m_side == m_side) 
-    //         break;
-    //     else if (boardModel.getCellModel(i, j).m_side == -m_side) {
-    //         potentialMove.type = MovementType::CAPTURE;
-    //         potentialMove.toCellCoordinates = sf::Vector2i(i, j);
-    //         m_validMoves.push_back(potentialMove);
-    //         break;
-    //     }
-    //     else {
-    //         potentialMove.type = MovementType::DEFAULT;
-    //         potentialMove.toCellCoordinates = sf::Vector2i(i, j);
-    //         m_validMoves.push_back(potentialMove);
-    //     }
-    // }
 }
 
 Bishop::Bishop(int side, Cell *standingOn) : Piece(side, standingOn) {

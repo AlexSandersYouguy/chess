@@ -16,6 +16,7 @@ private:
     Player m_blackPlayer;
     bool isEnded = false;
     Board m_board;
+    SpriteComponent backgroundImage;
 public:
     void play(GameWindow &renderWindow);
     void end(sf::RenderWindow &renderWindow);
@@ -40,7 +41,8 @@ void Game::play(GameWindow &renderWindow) {
             for (int i = 0; i < FIELD_SIDE; i++) {
                 for (int j = 0; j < FIELD_SIDE; j++) {
                     if (m_board.getCell(i, j)->isContains(mousePosition)) {
-                        std::cout << i << " " << j << "\n";
+                        std::cout << (char)('a' + i) << " " << j + 1 << "\n";
+                        //std::cout << i << " " << j << "\n";
                     }
                 }
             }
@@ -48,18 +50,21 @@ void Game::play(GameWindow &renderWindow) {
             wasMouseButtonReleased = false;
         }
 
-        renderWindow.clear(BACKGROUND_COLOR);
+        renderWindow.clear();
         if (renderWindow.isNeededToResize) {
             m_board.resize();
             renderWindow.isNeededToResize = false;
         }
+        backgroundImage.render(renderWindow);
         m_board.render(renderWindow);
         
         renderWindow.display();
     }
 }
 
-Game::Game() {}
+Game::Game() {
+    backgroundImage.initWithPath(BACKGROUND_IMAGE_PATH);
+}
 
 Game::~Game() {}
 

@@ -66,7 +66,7 @@ void Board::resize() {
     for (int i = 0; i < FIELD_SIDE; i++) {
         for (int j = 0; j < FIELD_SIDE; j++) {
             m_field[i][j].setSize(CELL_SIZE);
-            m_field[i][j].setPosition(FIELD_START + sf::Vector2f(i, j) * CELL_SIZE.x + BORDER_THICKNESS);
+            m_field[i][j].setPosition(FIELD_START + sf::Vector2f(i, FIELD_SIDE - j - 1) * CELL_SIZE.x + BORDER_THICKNESS);
         }
     }
 
@@ -87,16 +87,16 @@ Board::Board() {
 
     for (int i = 0; i < FIELD_SIDE; i++) {
         for (int j = 0; j < FIELD_SIDE; j++) {
-            (i + j) % 2 ? m_field[i][j].initWithPath(BLACK_CELL_PATH) : m_field[i][j].initWithPath(WHITE_CELL_PATH);
-            m_field[i][j].setCoordinates(sf::Vector2i(i, j));
-            m_field[i][j].setPosition(FIELD_START + sf::Vector2f(i, j) * CELL_SIZE.x + BORDER_THICKNESS);
+            m_field[i][j].initWithPath((i + j) % 2 ? BLACK_CELL_PATH : WHITE_CELL_PATH);
+            m_field[i][j].setCoordinates(sf::Vector2i(i, FIELD_SIDE - j - 1));
+            m_field[i][j].setPosition(FIELD_START + sf::Vector2f(i, FIELD_SIDE - j - 1) * CELL_SIZE.x + BORDER_THICKNESS);
             m_field[i][j].setSize(CELL_SIZE);
 
             if (j >= 2 && j <= 5) {
                 m_model[i][j].m_piece = PieceType::NONE;
                 m_model[i][j].m_side = 0;
             }
-            else if (j == 0) {
+            else if (j == 7) {
                 switch (i) {
                     case 0:
                     case 7: {
@@ -138,12 +138,12 @@ Board::Board() {
                     }
                 }
             }
-            else if (j == 1) {
+            else if (j == 6) {
                 m_allFigures.push_back(new Pawn(BLACK, &m_field[i][j]));
                 m_model[i][j].m_piece = PieceType::PAWN;
                 m_model[i][j].m_side = BLACK;
             }
-            else if (j == 7) {
+            else if (j == 0) {
                 switch (i) {
                     case 0:
                     case 7: {
@@ -184,7 +184,7 @@ Board::Board() {
                     }
                 }
             }
-            else if (j == 6) {
+            else if (j == 1) {
                 m_allFigures.push_back(new Pawn(WHITE, &m_field[i][j]));
                 m_model[i][j].m_piece = PieceType::PAWN;
                 m_model[i][j].m_side = WHITE;
